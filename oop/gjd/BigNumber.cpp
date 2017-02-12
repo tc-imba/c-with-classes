@@ -4,7 +4,6 @@
 // Just click on yellow background functions and use the bulb appeared on the left
 //
 
-#include <stdlib.h>
 #include <iostream>
 #include <cctype>
 #include <algorithm>
@@ -318,9 +317,9 @@ std::pair<BigNumber, BigNumber> BigNumber::divide(const BigNumber &divider, cons
     if (divider.m_symbol == ZERO)return std::pair<BigNumber, BigNumber>(ans, ans);
     ans.m_symbol = SYMBOL((int) divider.m_symbol * (int) divisor.m_symbol);
     BigNumber div = divisor, mod = divider;
-    div.m_symbol = mod.m_symbol = POSITIVE;
     long zeros = divider.length() - divisor.length();
     if (zeros < 0)return std::pair<BigNumber, BigNumber>(ans, mod);
+    div.m_symbol = mod.m_symbol = POSITIVE;
     if (zeros > 0)
     {
         div.m_digits.insert(div.m_digits.begin(), zeros, 0);
