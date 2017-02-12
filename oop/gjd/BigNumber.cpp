@@ -264,6 +264,7 @@ void BigNumber::trim()
 
 BigNumber BigNumber::add(const BigNumber *numA, const BigNumber *numB, SYMBOL symbolB)
 {
+    if (numA->length() == numB->length() && numA->length() == 0)return BigNumber("0");
     auto symbolA = numA->m_symbol;
     symbolB = SYMBOL((int) symbolB * (int) numB->m_symbol);
     if (numB->length() > numA->length())
