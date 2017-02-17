@@ -217,7 +217,7 @@ BigNumber BigNumber::operator*(const BigNumber &that) const
         for (int j = 0; j < that.length(); j++)
         {
             newNum.m_digits[i + j] += m_digits[i] * that.m_digits[j];
-            if (newNum.m_digits[i + j] > 10)
+            if (newNum.m_digits[i + j] >= 10)
             {
                 newNum.m_digits[i + j + 1] += newNum.m_digits[i + j] / 10;
                 newNum.m_digits[i + j] %= 10;
@@ -285,7 +285,7 @@ BigNumber BigNumber::add(const BigNumber *numA, const BigNumber *numB, SYMBOL sy
         }
         else if (newNum.m_digits[i] < 0)
         {
-            shift = newNum.m_digits[i] / 10 - 1;
+            shift = (newNum.m_digits[i] + 1) / 10 - 1;
             newNum.m_digits[i] = (newNum.m_digits[i] % 10 + 10) % 10;
         }
         else continue;
@@ -298,8 +298,10 @@ BigNumber BigNumber::add(const BigNumber *numA, const BigNumber *numB, SYMBOL sy
     if (shift != 0)newNum.m_digits.push_back(shift);
     if (newNum.m_digits.back() < 0)
     {
-        newNum.m_digits[0] = 10 - newNum.m_digits[0];
-        for (int i = 1; i < newNum.length() - 1; i++)newNum.m_digits[i] = 9 - newNum.m_digits[i];
+        int i = 0;
+        while (newNum.m_digits[i] == 0 && i < newNum.length() - 1)i++;
+        newNum.m_digits[i] = 10 - newNum.m_digits[i];
+        for (i++; i < newNum.length() - 1; i++)newNum.m_digits[i] = 9 - newNum.m_digits[i];
         newNum.m_digits[newNum.length() - 1] = -newNum.m_digits[newNum.length() - 1] - 1;
         newNum.m_symbol = NEGATIVE;
     }
