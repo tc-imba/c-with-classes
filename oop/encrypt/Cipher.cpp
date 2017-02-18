@@ -109,7 +109,30 @@ void Cipher::decrypt(const std::string &encrypted, const std::string &password)
 
 std::string Cipher::base64_encode(const std::vector<int64_t> &data)
 {
-
+    u_int8_t type = 0;
+    u_int8_t temp = 0;
+    string str;
+    for (auto num:data)
+    {
+        if (type > 0)
+        {
+            temp |= (num & (0 << type));
+            str += BASE64_SYMBOLS[temp];
+        }
+        for (u_int8_t i = 0; i < 10; i++)
+        {
+            str += BASE64_SYMBOLS[num & 0x3f];
+            num >>= 6;
+        }
+        type = (type + 2) % 6;
+        if (type < 2)
+        {
+            temp = num & (0 << (6 - type));
+            temp <<= (6 - type);
+        }
+    }
+    if (type > 0)str += BASE64_SYMBOLS[temp];
+    return str;
 }
 
 std::vector<int64_t> Cipher::base64_decode(const std::string &str)
