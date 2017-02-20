@@ -3,6 +3,7 @@ project(direct)
 
 set(CMAKE_CXX_STANDARD 11)
 
+include_directories(../../lib/md5)
 set(SOURCE_FILES main.cpp)
 add_executable(direct ${SOURCE_FILES})
 target_link_libraries(direct md5)
